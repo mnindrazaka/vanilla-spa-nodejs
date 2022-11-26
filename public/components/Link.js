@@ -1,3 +1,5 @@
+import { send } from "../state.js";
+
 function Link(props) {
   const a = document.createElement("a");
   a.href = props.href;
