@@ -1,5 +1,5 @@
 let state = {
-  hash: window.location.hash,
+  path: window.location.pathname,
   inputValue: localStorage.getItem("inputValue") ?? "",
   products: [],
   tag: "idle",
@@ -55,7 +55,7 @@ function reducer(prevState, action) {
         case "NAVIGATE_PAGE": {
           return {
             ...prevState,
-            hash: action.payload.hash,
+            path: action.payload.path,
           };
         }
         default: {
@@ -83,7 +83,7 @@ function reducer(prevState, action) {
         case "NAVIGATE_PAGE": {
           return {
             ...prevState,
-            hash: action.payload.hash,
+            path: action.payload.path,
           };
         }
         default: {
@@ -111,7 +111,7 @@ function reducer(prevState, action) {
         case "NAVIGATE_PAGE": {
           return {
             ...prevState,
-            hash: action.payload.hash,
+            path: action.payload.path,
           };
         }
         default: {
@@ -139,7 +139,7 @@ function reducer(prevState, action) {
         case "NAVIGATE_PAGE": {
           return {
             ...prevState,
-            hash: action.payload.hash,
+            path: action.payload.path,
           };
         }
         default: {
@@ -159,8 +159,8 @@ function send(action) {
 }
 
 function onStateChange(prevState, nextState) {
-  if (prevState.hash !== nextState.hash) {
-    history.pushState(null, "", nextState.hash);
+  if (prevState.path !== nextState.path) {
+    history.pushState(null, "", nextState.path);
   }
 
   if (prevState.inputValue !== nextState.inputValue) {
@@ -190,14 +190,14 @@ function Link(props) {
   a.onclick = function (event) {
     event.preventDefault();
     const url = new URL(event.target.href);
-    send({ type: "NAVIGATE_PAGE", payload: { hash: url.hash } });
+    send({ type: "NAVIGATE_PAGE", payload: { path: url.pathname } });
   };
   return a;
 }
 
 function Navbar() {
-  const linkHome = Link({ href: "#home", label: "Home" });
-  const linkAbout = Link({ href: "#about", label: "About" });
+  const linkHome = Link({ href: "/home", label: "Home" });
+  const linkAbout = Link({ href: "/about", label: "About" });
 
   const div = document.createElement("div");
   div.append(linkHome);
@@ -306,7 +306,7 @@ function HomePage() {
 }
 
 function AboutPage() {
-  const linkHome = Link({ href: "#home", label: "Back to Home" });
+  const linkHome = Link({ href: "/home", label: "Back to Home" });
 
   const p = document.createElement("p");
   p.textContent = "Welcome to About Page";
@@ -321,9 +321,9 @@ function App() {
   const homePage = HomePage();
   const aboutPage = AboutPage();
 
-  if (state.hash == "#home") {
+  if (state.path == "/home") {
     return homePage;
-  } else if (state.hash == "#about") {
+  } else if (state.path == "/about") {
     return aboutPage;
   } else {
     return homePage;
